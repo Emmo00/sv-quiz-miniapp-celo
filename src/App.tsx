@@ -165,7 +165,8 @@ export default function SiliconValleyQuiz() {
     isError: errorWhileMinting,
     error: mintingError,
   } = useWriteContract();
-  const { address } = useAccount();
+  const { isConnected, isConnecting, address } = useAccount();
+  const { connect, connectors } = useConnect();
 
   const calculateResult = () => {
     const counts = answers.reduce(
@@ -232,6 +233,13 @@ export default function SiliconValleyQuiz() {
   }
 
   function handleMintNFT() {
+    if (!isConnected || !address) {
+      toast.error("Please connect your wallet to mint the NFT.");
+
+      connect({ connector: connectors[0] });
+      return;
+    }
+
     writeContract({
       address: CONTRACT_ADDRESS,
       abi: CONTRACT_ABI,
@@ -458,7 +466,7 @@ export default function SiliconValleyQuiz() {
                 <Button
                   className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-300 hover:to-red-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                   onClick={handleMintNFT}
-                  disabled={isMinting}
+                  // disabled={isMinting}
                 >
                   {isMinting ? (
                     <span className="flex items-center justify-center gap-2">
