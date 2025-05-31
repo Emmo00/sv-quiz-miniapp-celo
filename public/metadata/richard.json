@@ -1,0 +1,10 @@
+{
+  "name": "Richard Hendricks",
+  "description": "You’re the anxious genius who invented revolutionary tech but doubts everything.",
+  "image": "https://ipfs.io/ipfs/bafkreiejidncrhregblgbc2lwiqq5qql3mtz3niryd7xhzkx4y2h2zzjle",
+  "attributes": [
+    { "trait_type": "Character", "value": "Richard" },
+    { "trait_type": "Personality", "value": "Neurotic" },
+    { "trait_type": "Tech Stack", "value": "Compression / Backend" }
+  ]
+}

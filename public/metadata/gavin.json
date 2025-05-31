@@ -1,0 +1,10 @@
+{
+  "name": "Gavin Belson",
+  "description": "You’re the corporate overlord with too much power and questionable ethics.",
+  "image": "https://ipfs.io/ipfs/bafkreibqxepar7h27dieks3kvqfdcbleaezbencdavsvxsddhk3uitq4vm",
+  "attributes": [
+    { "trait_type": "Character", "value": "Gavin" },
+    { "trait_type": "Personality", "value": "Authoritarian" },
+    { "trait_type": "Tech Stack", "value": "Corporate / Cloud" }
+  ]
+}

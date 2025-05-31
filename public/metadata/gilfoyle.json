@@ -1,0 +1,10 @@
+{
+  "name": "Gilfoyle",
+  "description": "You're the brutally honest backend wizard with zero tolerance for BS.",
+  "image": "https://ipfs.io/ipfs/bafkreibvjxwr6mus4l3rpqqdfia76os5icevrwrfupft7oq5wnbsgkfeoy",
+  "attributes": [
+    { "trait_type": "Character", "value": "Gilfoyle" },
+    { "trait_type": "Personality", "value": "Sarcastic" },
+    { "trait_type": "Tech Stack", "value": "DevOps / Security" }
+  ]
+}

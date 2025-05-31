@@ -1,0 +1,10 @@
+{
+  "name": "Erlich Bachman",
+  "description": "You’re the loud, stoned visionary who talks big and parties bigger.",
+  "image": "https://ipfs.io/ipfs/bafkreidl5sabylyrc7hraptfl5otgujvg6uwjdbfh3bio5ezztf5igcf2m",
+  "attributes": [
+    { "trait_type": "Character", "value": "Erlich" },
+    { "trait_type": "Personality", "value": "Boastful" },
+    { "trait_type": "Tech Stack", "value": "Hustler / Vision" }
+  ]
+}
