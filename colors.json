@@ -1,0 +1,9 @@
+{
+  "background": "#0D1117",
+  "primary": "#00FFC2",
+  "secondary": "#FF5E5B",
+  "text": "#E6EDF3",
+  "muted": "#8B949E",
+  "success": "#32CD32",
+  "error": "#FF6347"
+}
