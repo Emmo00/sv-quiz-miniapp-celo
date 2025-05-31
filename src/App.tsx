@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Rocket, Share, RotateCcw, Sparkles } from "lucide-react";
+import { useWriteContract } from "wagmi";
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "./config";
+import { celo } from "viem/chains";
+import { toast } from "sonner";
 
 const questions = [
   {
@@ -154,6 +158,14 @@ export default function SiliconValleyQuiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const {
+    writeContract,
+    data: mintTransactionHash,
+    isPending: isMinting,
+    isError: errorWhileMinting,
+    error: mintingError,
+  } = useWriteContract();
+  const { address } = useAccount();
 
   const calculateResult = () => {
     const counts = answers.reduce(
@@ -210,9 +222,55 @@ export default function SiliconValleyQuiz() {
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
+  function handleShareCast() {
+    sdk.actions.composeCast({
+      text: `I just took the Silicon Valley character quiz and I'm ${characters[result as keyof typeof characters].name}!\n🤖💻 Check it out and see which character you are! #SiliconValleyQuiz`,
+      embeds: [
+        window.location.href, // Current page URL
+      ],
+    });
+  }
+
+  function handleMintNFT() {
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: "mintCharacter",
+      args: [address, result],
+      chain: celo,
+      account: address,
+    });
+  }
+
   useEffect(() => {
     sdk.actions.ready();
   }, []);
+
+  useEffect(() => {
+    if (mintTransactionHash) {
+      toast.success("NFT minted successfully!", {
+        description: "Check your wallet for the new NFT!",
+        action: {
+          label: "View on Celo Explorer",
+          onClick: () => {
+            window.open(
+              `https://celo.blockscout.com/tx/${mintTransactionHash}`,
+              "_blank"
+            );
+          },
+        },
+      });
+      console.log("Mint transaction hash:", mintTransactionHash);
+    }
+    if (errorWhileMinting) {
+      toast.error("Error while minting NFT", {
+        description: mintingError?.message || "An unknown error occurred.",
+        duration: 15000, // Show for 15 seconds
+      });
+
+      console.error("Error while minting NFT:", mintingError);
+    }
+  }, [mintTransactionHash, errorWhileMinting]);
 
   if (screen === "welcome") {
     return (
@@ -397,14 +455,46 @@ export default function SiliconValleyQuiz() {
 
               {/* Action Buttons */}
               <div className="grid md:grid-cols-3 gap-4">
-                <Button className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-300 hover:to-red-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105">
-                  <span className="flex items-center justify-center gap-2">
-                    <Sparkles className="w-5 h-5" />
-                    Mint NFT
-                  </span>
+                <Button
+                  className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-300 hover:to-red-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                  onClick={handleMintNFT}
+                  disabled={isMinting}
+                >
+                  {isMinting ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        />
+                      </svg>
+                      Minting...
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center gap-2">
+                      <Sparkles className="w-5 h-5" />
+                      Mint NFT
+                    </span>
+                  )}
                 </Button>
 
-                <Button className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-300 hover:to-pink-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105">
+                <Button
+                  className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-300 hover:to-pink-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105"
+                  onClick={handleShareCast}
+                >
                   <span className="flex items-center justify-center gap-2">
                     <Share className="w-5 h-5" />
                     Share Cast
