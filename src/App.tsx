@@ -500,6 +500,30 @@ export default function SiliconValleyQuiz() {
                 {character.description}
               </p>
 
+              <div className="mb-8 flex justify-center">
+                <Card className="bg-slate-700/40 border-slate-600/50 shadow-lg w-full max-w-xs">
+                  <CardContent className="p-2 flex items-center justify-center">
+                    {isConnected && address ? (
+                      <span className="text-green-300 font-mono text-sm truncate">
+                        Connected: {address.slice(0, 6)}...{address.slice(-4)}
+                      </span>
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          connect({
+                            connector: connectors[0],
+                            chainId: base.id,
+                          })
+                        }
+                        className="bg-gradient-to-r from-green-400 to-cyan-400 text-slate-900 font-semibold rounded-lg px-4 py-2"
+                      >
+                        Connect Wallet
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+
               {/* Action Buttons */}
               <div className="grid md:grid-cols-3 gap-4">
                 <Button
