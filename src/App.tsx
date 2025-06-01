@@ -246,6 +246,7 @@ export default function SiliconValleyQuiz() {
       functionName: "mintCharacter",
       args: [address, result],
       chain: celo,
+      chainId: celo.id,
       account: address,
     });
   }
