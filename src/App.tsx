@@ -233,6 +233,12 @@ export default function SiliconValleyQuiz() {
       return;
     }
 
+    if (currentAccountChainId !== celo.id) {
+      toast.error("Please switch to the Celo network to mint the NFT.");
+      switchChain({ chainId: celo.id });
+      return;
+    }
+
     console.log("Minting NFT for address:", address);
     console.log("current chainID:", currentAccountChainId);
     console.log("Selected character result:", result);
