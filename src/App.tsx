@@ -1,6 +1,6 @@
 import { sdk } from "@farcaster/frame-sdk";
 import { useEffect } from "react";
-import { useAccount, useConnect, useSignMessage } from "wagmi";
+import { useAccount, useConnect, useSignMessage, useSwitchChain } from "wagmi";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -165,8 +165,14 @@ export default function SiliconValleyQuiz() {
     isError: errorWhileMinting,
     error: mintingError,
   } = useWriteContract();
-  const { isConnected, isConnecting, address } = useAccount();
+  const {
+    isConnected,
+    isConnecting,
+    address,
+    chainId: currentAccountChainId,
+  } = useAccount();
   const { connect, connectors } = useConnect();
+  const { switchChain } = useSwitchChain();
 
   const calculateResult = () => {
     const counts = answers.reduce(
@@ -238,6 +244,12 @@ export default function SiliconValleyQuiz() {
 
       connect({ connector: connectors[0], chainId: celo.id });
       return;
+    }
+
+    if (currentAccountChainId !== celo.id) {
+      switchChain({
+        chainId: celo.id,
+      });
     }
 
     writeContract({
