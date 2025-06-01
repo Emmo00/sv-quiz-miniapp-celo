@@ -27,7 +27,7 @@ contract SiliconValleyQuizNFT is ERC721Enumerable, Ownable {
     function mintCharacter(
         address user,
         string memory characterName
-    ) external onlyOwner {
+    ) external {
         Character character = _stringToCharacter(characterName);
 
         require(
