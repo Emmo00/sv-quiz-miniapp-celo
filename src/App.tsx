@@ -251,7 +251,6 @@ export default function SiliconValleyQuiz() {
   }
 
   useEffect(() => {
-    connect({ connector: connectors[0], chainId: celo.id });
     sdk.actions.ready();
   }, []);
 
