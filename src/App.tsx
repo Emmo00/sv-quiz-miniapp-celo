@@ -243,7 +243,7 @@ export default function SiliconValleyQuiz() {
       functionName: "mintCharacter",
       args: [address, result],
       connector: connectors[0],
-      account: address,
+      account: null,
       chain: base,
       chainId: base.id,
     });
