@@ -340,7 +340,7 @@ export default function SiliconValleyQuiz() {
 
               <div className="mb-8 flex justify-center">
                 <Card className="bg-slate-700/40 border-slate-600/50 shadow-lg w-full max-w-xs">
-                  <CardContent className="p-4 flex items-center justify-center">
+                  <CardContent className="p-2 flex items-center justify-center">
                     {isConnected && address ? (
                       <span className="text-green-300 font-mono text-sm truncate">
                         Connected: {address.slice(0, 6)}...{address.slice(-4)}
