@@ -160,6 +160,7 @@ export default function SiliconValleyQuiz() {
   const [result, setResult] = useState<string | null>(null);
   const {
     writeContract,
+    writeContractAsync,
     data: mintTransactionHash,
     isPending: isMinting,
     isError: errorWhileMinting,
@@ -238,7 +239,7 @@ export default function SiliconValleyQuiz() {
     });
   }
 
-  function handleMintNFT() {
+  async function handleMintNFT() {
     if (!isConnected || !address) {
       toast.error("Please connect your wallet to mint the NFT.");
 
@@ -252,16 +253,24 @@ export default function SiliconValleyQuiz() {
       });
     }
 
-    writeContract({
+    writeContractAsync({
       address: CONTRACT_ADDRESS,
       abi: CONTRACT_ABI,
       functionName: "mintCharacter",
       args: [address, result],
       chain: celo,
       chainId: 42220,
-      account: address,
     });
   }
+
+  useEffect(() => {
+    // switch to celo chain if not already connected
+    if (isConnected && currentAccountChainId !== celo.id) {
+      switchChain({
+        chainId: celo.id,
+      });
+    }
+  }, [isConnected, currentAccountChainId, switchChain]);
 
   useEffect(() => {
     sdk.actions.ready();
@@ -275,7 +284,7 @@ export default function SiliconValleyQuiz() {
           label: "View on Celo Explorer",
           onClick: () => {
             window.open(
-              `https://celo.blockscout.com/tx/${mintTransactionHash}`,
+              `https://celoscan.io/tx/${mintTransactionHash}`,
               "_blank"
             );
           },
