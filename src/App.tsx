@@ -252,8 +252,6 @@ export default function SiliconValleyQuiz() {
       abi: CONTRACT_ABI,
       functionName: "mintCharacter",
       args: [address, result],
-      chain: base,
-      chainId: base.id,
     });
   }
 
