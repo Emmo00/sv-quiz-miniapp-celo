@@ -165,7 +165,7 @@ export default function SiliconValleyQuiz() {
     isPending: isMinting,
     isError: errorWhileMinting,
     error: mintingError,
-  } = useWriteContract();
+  } = useWriteContract({});
   const {
     isConnected,
     isConnecting,
@@ -174,20 +174,6 @@ export default function SiliconValleyQuiz() {
   } = useAccount();
   const { connect, connectors } = useConnect();
   const { switchChain } = useSwitchChain();
-
-  const calculateResult = () => {
-    const counts = answers.reduce(
-      (acc, answer) => {
-        acc[answer] = (acc[answer] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>
-    );
-
-    return Object.entries(counts).reduce((a, b) =>
-      counts[a[0]] > counts[b[0]] ? a : b
-    )[0];
-  };
 
   const handleAnswerSelect = (characterType: string) => {
     setSelectedAnswer(characterType);
@@ -251,29 +237,21 @@ export default function SiliconValleyQuiz() {
     console.log("current chainID:", currentAccountChainId);
     console.log("Selected character result:", result);
 
-    writeContract(
-      {
-        address: CONTRACT_ADDRESS,
-        abi: CONTRACT_ABI,
-        functionName: "mintCharacter",
-        args: [address, result],
-        chain: base,
-      },
-      {
-        onError: (error) => {
-          toast.error("Error while minting NFT", {
-            description: error.message || "An unknown error occurred.",
-            duration: 5000, // Show for 5 seconds
-          });
-          console.error("Error while minting NFT:", error);
-        },
-      }
-    );
+    const resultHash = await writeContractAsync({
+      address: CONTRACT_ADDRESS,
+      abi: CONTRACT_ABI,
+      functionName: "mintCharacter",
+      args: [address, result],
+      connector: connectors[0],
+      account: address,
+      chain: base,
+      chainId: base.id,
+    });
   }
 
+  // switch to celo chain if not already connected
   useEffect(() => {
-    // switch to celo chain if not already connected
-    if (isConnected && currentAccountChainId !== celo.id) {
+    if (isConnected && currentAccountChainId !== base.id) {
       switchChain({
         chainId: base.id,
       });
