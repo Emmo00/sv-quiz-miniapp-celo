@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Rocket, Share, RotateCcw, Sparkles } from "lucide-react";
 import { useWriteContract } from "wagmi";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "./config";
-import { celo } from "viem/chains";
+import { base, celo } from "viem/chains";
 import { toast } from "sonner";
 
 const questions = [
@@ -243,14 +243,8 @@ export default function SiliconValleyQuiz() {
     if (!isConnected || !address) {
       toast.error("Please connect your wallet to mint the NFT.");
 
-      connect({ connector: connectors[0], chainId: celo.id });
+      connect({ connector: connectors[0], chainId: base.id });
       return;
-    }
-
-    if (currentAccountChainId !== celo.id) {
-      switchChain({
-        chainId: celo.id,
-      });
     }
 
     writeContractAsync({
@@ -258,8 +252,8 @@ export default function SiliconValleyQuiz() {
       abi: CONTRACT_ABI,
       functionName: "mintCharacter",
       args: [address, result],
-      chain: celo,
-      chainId: 42220,
+      chain: base,
+      chainId: base.id,
     });
   }
 
@@ -267,7 +261,7 @@ export default function SiliconValleyQuiz() {
     // switch to celo chain if not already connected
     if (isConnected && currentAccountChainId !== celo.id) {
       switchChain({
-        chainId: celo.id,
+        chainId: base.id,
       });
     }
   }, [isConnected, currentAccountChainId, switchChain]);
