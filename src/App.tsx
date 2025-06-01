@@ -235,7 +235,10 @@ export default function SiliconValleyQuiz() {
 
     if (currentAccountChainId !== celo.id) {
       toast.error("Switching to Celo chain to mint NFT... Please Try Again.");
-      switchChain({ chainId: celo.id });
+      switchChain({
+        connector: connectors[0],
+        chainId: celo.id,
+      });
       return;
     }
 
@@ -262,6 +265,7 @@ export default function SiliconValleyQuiz() {
   useEffect(() => {
     if (isConnected && currentAccountChainId !== celo.id) {
       switchChain({
+        connector: connectors[0],
         chainId: celo.id,
       });
     }
