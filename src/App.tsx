@@ -247,12 +247,28 @@ export default function SiliconValleyQuiz() {
       return;
     }
 
-    writeContractAsync({
-      address: CONTRACT_ADDRESS,
-      abi: CONTRACT_ABI,
-      functionName: "mintCharacter",
-      args: [address, result],
-    });
+    console.log("Minting NFT for address:", address);
+    console.log("current chainID:", currentAccountChainId);
+    console.log("Selected character result:", result);
+
+    writeContract(
+      {
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: "mintCharacter",
+        args: [address, result],
+        chain: base,
+      },
+      {
+        onError: (error) => {
+          toast.error("Error while minting NFT", {
+            description: error.message || "An unknown error occurred.",
+            duration: 5000, // Show for 5 seconds
+          });
+          console.error("Error while minting NFT:", error);
+        },
+      }
+    );
   }
 
   useEffect(() => {
