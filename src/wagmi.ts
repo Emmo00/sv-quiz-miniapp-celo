@@ -3,11 +3,10 @@ import { http, createConfig } from "wagmi";
 import { celo, base, mainnet } from "wagmi/chains";
 
 export const config = createConfig({
-  chains: [celo, mainnet],
+  chains: [celo],
   connectors: [farcasterFrame()],
   transports: {
     [celo.id]: http(),
-    [mainnet.id]: http(),
   },
 });
 
