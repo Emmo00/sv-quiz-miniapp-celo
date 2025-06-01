@@ -229,7 +229,7 @@ export default function SiliconValleyQuiz() {
     if (!isConnected || !address) {
       toast.error("Please connect your wallet to mint the NFT.");
 
-      connect({ connector: connectors[0], chainId: base.id });
+      connect({ connector: connectors[0], chainId: celo.id });
       return;
     }
 
@@ -244,23 +244,23 @@ export default function SiliconValleyQuiz() {
       args: [address, result],
       connector: connectors[0],
       account: await connectors[0].getAccounts()[0],
-      chain: base,
-      chainId: base.id,
+      chain: celo,
+      chainId: celo.id,
     });
   }
 
   // connect wallet if not connected
   useEffect(() => {
     if (!isConnected && !isConnecting) {
-      connect({ connector: connectors[0], chainId: base.id });
+      connect({ connector: connectors[0], chainId: celo.id });
     }
   }, [isConnected, isConnecting, connect, connectors]);
 
   // switch to celo chain if not already connected
   useEffect(() => {
-    if (isConnected && currentAccountChainId !== base.id) {
+    if (isConnected && currentAccountChainId !== celo.id) {
       switchChain({
-        chainId: base.id,
+        chainId: celo.id,
       });
     }
   }, [isConnected, currentAccountChainId, switchChain]);
@@ -344,7 +344,7 @@ export default function SiliconValleyQuiz() {
                         onClick={() =>
                           connect({
                             connector: connectors[0],
-                            chainId: base.id,
+                            chainId: celo.id,
                           })
                         }
                         className="bg-gradient-to-r from-green-400 to-cyan-400 text-slate-900 font-semibold rounded-lg px-4 py-2"
@@ -512,7 +512,7 @@ export default function SiliconValleyQuiz() {
                         onClick={() =>
                           connect({
                             connector: connectors[0],
-                            chainId: base.id,
+                            chainId: celo.id,
                           })
                         }
                         className="bg-gradient-to-r from-green-400 to-cyan-400 text-slate-900 font-semibold rounded-lg px-4 py-2"
