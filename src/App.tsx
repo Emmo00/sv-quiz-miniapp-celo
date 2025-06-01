@@ -234,7 +234,7 @@ export default function SiliconValleyQuiz() {
     }
 
     if (currentAccountChainId !== celo.id) {
-      toast.error("Please switch to the Celo network to mint the NFT.");
+      toast.error("Switching to Celo chain to mint NFT... Please Try Again.");
       switchChain({ chainId: celo.id });
       return;
     }
@@ -248,10 +248,6 @@ export default function SiliconValleyQuiz() {
       abi: CONTRACT_ABI,
       functionName: "mintCharacter",
       args: [address, result],
-      connector: connectors[0],
-      account: await connectors[0].getAccounts()[0],
-      chain: celo,
-      chainId: celo.id,
     });
   }
 
