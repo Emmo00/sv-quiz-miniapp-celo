@@ -236,7 +236,7 @@ export default function SiliconValleyQuiz() {
     if (!isConnected || !address) {
       toast.error("Please connect your wallet to mint the NFT.");
 
-      connect({ connector: connectors[0] });
+      connect({ connector: connectors[0], chainId: celo.id });
       return;
     }
 
