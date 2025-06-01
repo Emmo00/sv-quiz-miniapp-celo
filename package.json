@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@farcaster/frame-sdk": "latest",
-    "@farcaster/frame-wagmi-connector": "^0.0.27",
+    "@farcaster/frame-sdk": "0.0.39",
+    "@farcaster/frame-wagmi-connector": "0.0.27",
     "@radix-ui/react-progress": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@rainbow-me/rainbowkit": "^2.2.5",

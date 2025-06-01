@@ -249,6 +249,13 @@ export default function SiliconValleyQuiz() {
     });
   }
 
+  // connect wallet if not connected
+  useEffect(() => {
+    if (!isConnected && !isConnecting) {
+      connect({ connector: connectors[0], chainId: base.id });
+    }
+  }, [isConnected, isConnecting, connect, connectors]);
+
   // switch to celo chain if not already connected
   useEffect(() => {
     if (isConnected && currentAccountChainId !== base.id) {
