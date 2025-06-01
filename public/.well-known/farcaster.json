@@ -1,14 +1,9 @@
 {
-  "accountAssociation": {
-    "header": "",
-    "payload": "",
-    "signature": ""
-  },
   "frame": {
     "version": "1",
     "name": "Silicon Valley character Quiz!",
-    "subTitle": "Find out which Silicon Valley character you are most like!",
-    "description": "Take the Silicon Valley character quiz to discover which character from the show you resemble the most. Answer a series of fun questions and get your result instantly!",
+    "subTitle": "Which Silicon Valley character you are most like!",
+    "description": "Take the Silicon Valley character quiz to discover which character from the show you resemble the most.",
     "homeUrl": "https://sv-quiz-miniapp-celo-84gt.vercel.app",
     "iconUrl": "https://res.cloudinary.com/drcwv987u/image/upload/v1748696525/sv_frame_splash_oookyt.jpg",
     "imageUrl": "ttps://res.cloudinary.com/drcwv987u/image/upload/v1748737183/What_Silicon_Valley_Character_are_you_otj2hj.png",
