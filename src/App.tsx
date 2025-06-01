@@ -225,7 +225,7 @@ export default function SiliconValleyQuiz() {
 
   function handleShareCast() {
     sdk.actions.composeCast({
-      text: `I just took the Silicon Valley character quiz and I'm ${characters[result as keyof typeof characters].name}!\n🤖💻 Check it out and see which character you are! #SiliconValleyQuiz`,
+      text: `I just took the Silicon Valley character quiz and I'm ${characters[result as keyof typeof characters].name}!\n\n🤖💻 Check it out and see which character you are! #SiliconValleyQuiz`,
       embeds: [
         window.location.href, // Current page URL
       ],
@@ -251,6 +251,7 @@ export default function SiliconValleyQuiz() {
   }
 
   useEffect(() => {
+    connect({ connector: connectors[0], chainId: celo.id });
     sdk.actions.ready();
   }, []);
 
@@ -273,7 +274,7 @@ export default function SiliconValleyQuiz() {
     if (errorWhileMinting) {
       toast.error("Error while minting NFT", {
         description: mintingError?.message || "An unknown error occurred.",
-        duration: 15000, // Show for 15 seconds
+        duration: 5000, // Show for 5 seconds
       });
 
       console.error("Error while minting NFT:", mintingError);
