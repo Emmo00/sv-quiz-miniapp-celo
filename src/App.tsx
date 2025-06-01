@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Rocket, Share, RotateCcw, Sparkles } from "lucide-react";
-import { useWriteContract, useSendTransaction } from "wagmi";
+import { useWriteContract } from "wagmi";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "./config";
 import { base, celo } from "viem/chains";
 import { toast } from "sonner";
@@ -204,9 +204,7 @@ export default function SiliconValleyQuiz() {
       }
     }, 1000);
   };
-  const {
-    sendTransactionAsync
-  } = useSendTransaction()
+
 
   const resetQuiz = () => {
     setScreen("welcome");
