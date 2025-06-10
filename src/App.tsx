@@ -158,6 +158,10 @@ export default function SiliconValleyQuiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [userPFP, setUserPFP] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [userDisplayName, setUserDisplayName] = useState<string | null>(null);
+
   const {
     writeContract,
     writeContractAsync,
@@ -218,10 +222,8 @@ export default function SiliconValleyQuiz() {
 
   function handleShareCast() {
     sdk.actions.composeCast({
-      text: `I just took the Silicon Valley character quiz and I'm ${characters[result as keyof typeof characters].name}!\n\n🤖💻 Check it out and see which character you are! #SiliconValleyQuiz`,
-      embeds: [
-        window.location.href, // Current page URL
-      ],
+      text: `I just took the Silicon Valley character quiz and I'm ${characters[result as keyof typeof characters].name}!\n\n"${characters[result].quote}"\n\n🤖💻 Check it out and see which character you are! #SiliconValleyQuiz`,
+      embeds: [window.location.href + "/" + result + ".html"],
     });
   }
 
@@ -251,6 +253,9 @@ export default function SiliconValleyQuiz() {
       abi: CONTRACT_ABI,
       functionName: "mintCharacter",
       args: [address, result],
+      chainId: celo.id,
+      chain: celo,
+      account: address,
     });
   }
 
@@ -272,7 +277,17 @@ export default function SiliconValleyQuiz() {
   }, [isConnected, currentAccountChainId, switchChain]);
 
   useEffect(() => {
-    sdk.actions.ready();
+    async function setupThings() {
+      const user = await sdk.context;
+      if (user) {
+        setUserPFP(user.user.pfpUrl);
+        setUsername(user.user.username);
+        setUserDisplayName(user.user.displayName);
+      }
+      sdk.actions.ready();
+    }
+
+    setupThings();
   }, []);
 
   useEffect(() => {
@@ -342,9 +357,22 @@ export default function SiliconValleyQuiz() {
                 <Card className="bg-slate-700/40 border-slate-600/50 shadow-lg w-full max-w-xs">
                   <CardContent className="p-2 flex items-center justify-center">
                     {isConnected && address ? (
-                      <span className="text-green-300 font-mono text-sm truncate">
-                        Connected: {address.slice(0, 6)}...{address.slice(-4)}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span>
+                          <img
+                            src={userPFP}
+                            alt={"User"}
+                            className="w-10 h-10 rounded-full"
+                          />
+                        </span>
+                        <span className="flex flex-col text-left text-green-300 font-mono truncate">
+                          <span>{userDisplayName || username || "User"} </span>
+                          <span className="text-xs text-slate-400">
+                            Connected: {address.slice(0, 6)}...
+                            {address.slice(-4)}
+                          </span>
+                        </span>
+                      </div>
                     ) : (
                       <Button
                         onClick={() =>
@@ -487,7 +515,7 @@ export default function SiliconValleyQuiz() {
                   className={`absolute inset-0 bg-gradient-to-r ${character.color} rounded-2xl blur-xl opacity-30 animate-pulse`}
                 ></div>
                 <h1
-                  className={`relative text-4xl md:text-5xl font-bold bg-gradient-to-r ${character.color} bg-clip-text text-transparent font-['Poppins'] flex items-center justify-center gap-4`}
+                  className={`relative text-2xl md:text-5xl font-bold bg-gradient-to-r ${character.color} bg-clip-text text-transparent font-['Poppins'] flex items-center justify-center gap-4`}
                 >
                   <span className="text-6xl">{character.emoji}</span>
                   You're {character.name}!
@@ -496,13 +524,13 @@ export default function SiliconValleyQuiz() {
 
               {/* Character Quote */}
               <div className="mb-8 p-6 bg-slate-700/30 rounded-2xl border border-slate-600/50">
-                <p className="text-2xl text-slate-200 font-['Inter'] italic">
+                <p className="text-slate-200 font-['Inter'] italic">
                   "{character.quote}"
                 </p>
               </div>
 
               {/* Character Description */}
-              <p className="text-xl text-slate-300 mb-12 font-['Inter'] leading-relaxed">
+              <p className="text-lg text-slate-300 mb-12 font-['Inter'] leading-relaxed">
                 {character.description}
               </p>
 
@@ -510,9 +538,22 @@ export default function SiliconValleyQuiz() {
                 <Card className="bg-slate-700/40 border-slate-600/50 shadow-lg w-full max-w-xs">
                   <CardContent className="p-2 flex items-center justify-center">
                     {isConnected && address ? (
-                      <span className="text-green-300 font-mono text-sm truncate">
-                        Connected: {address.slice(0, 6)}...{address.slice(-4)}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span>
+                          <img
+                            src={userPFP}
+                            alt={"User"}
+                            className="w-10 h-10 rounded-full"
+                          />
+                        </span>
+                        <span className="flex flex-col text-left text-green-300 font-mono truncate">
+                          <span>{userDisplayName || username || "User"} </span>
+                          <span className="text-xs text-slate-400">
+                            Connected: {address.slice(0, 6)}...
+                            {address.slice(-4)}
+                          </span>
+                        </span>
+                      </div>
                     ) : (
                       <Button
                         onClick={() =>
@@ -532,6 +573,15 @@ export default function SiliconValleyQuiz() {
 
               {/* Action Buttons */}
               <div className="grid md:grid-cols-3 gap-4">
+                <Button
+                  className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-300 hover:to-pink-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105"
+                  onClick={handleShareCast}
+                >
+                  <span className="flex items-center justify-center gap-2">
+                    <Share className="w-5 h-5" />
+                    Share Your Result
+                  </span>
+                </Button>
                 <Button
                   className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-300 hover:to-red-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                   onClick={handleMintNFT}
@@ -566,16 +616,6 @@ export default function SiliconValleyQuiz() {
                       Mint NFT
                     </span>
                   )}
-                </Button>
-
-                <Button
-                  className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-300 hover:to-pink-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105"
-                  onClick={handleShareCast}
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    <Share className="w-5 h-5" />
-                    Share Cast
-                  </span>
                 </Button>
 
                 <Button
