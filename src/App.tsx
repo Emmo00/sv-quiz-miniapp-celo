@@ -209,6 +209,7 @@ export default function SiliconValleyQuiz() {
     }, 1000);
   };
 
+
   const resetQuiz = () => {
     setScreen("welcome");
     setCurrentQuestion(0);
@@ -460,11 +461,10 @@ export default function SiliconValleyQuiz() {
                       key={index}
                       onClick={() => handleAnswerSelect(option.character)}
                       disabled={showFeedback}
-                      className={`group relative p-6 h-auto text-left text-lg font-['Inter'] transition-all duration-300 transform hover:scale-[1.02] ${
-                        selectedAnswer === option.character
+                      className={`group relative p-6 h-auto text-left text-lg font-['Inter'] transition-all duration-300 transform hover:scale-[1.02] ${selectedAnswer === option.character
                           ? "bg-gradient-to-r from-green-400/20 to-cyan-400/20 border-green-400 shadow-lg shadow-green-400/25"
                           : "bg-slate-700/50 hover:bg-slate-600/50 border-slate-600 hover:border-slate-500"
-                      } ${showFeedback ? "cursor-not-allowed" : "cursor-pointer"}`}
+                        } ${showFeedback ? "cursor-not-allowed" : "cursor-pointer"}`}
                       variant="outline"
                     >
                       <span className="z-10 text-white group-hover:text-green-300 transition-colors duration-300 break-words whitespace-normal">
@@ -585,7 +585,7 @@ export default function SiliconValleyQuiz() {
                 <Button
                   className="group relative px-6 py-4 text-lg font-semibold bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-300 hover:to-red-300 text-white border-0 rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                   onClick={handleMintNFT}
-                  // disabled={isMinting}
+                // disabled={isMinting}
                 >
                   {isMinting ? (
                     <span className="flex items-center justify-center gap-2">
